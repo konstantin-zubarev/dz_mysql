@@ -1,0 +1,27 @@
+---
+# defaults file for roles/mysql
+
+dir_mysql: /etc/my.cnf.d/
+
+mysql_root_password: "Pass121@@212"
+mysql_root_mycnf_path: /root/.my.cnf
+
+mysql_db_name: "bet"
+mysql_db_user: "repl"
+mysql_db_user_password: "Pass121##212"
+mysql_db_user_privilege: "*.*:REPLICATION SLAVE"
+mysql_db_dump_path: "/tmp/bet.dmp"
+
+mysql_master_ip: "192.168.11.10"
+
+
+mysql_db_rep_ignored_tables:
+  - bet.events_on_demand
+  - bet.v_same_event
+mysql_db_rep_dump_path: "/tmp/master.sql"
+mysql_db_rep_dump_path_vm: "./tmp/master.sql"
+
+somelist:
+  - https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+  - Percona-Server-server-57
+  - MySQL-python

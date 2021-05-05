@@ -1,0 +1,39 @@
+---
+# tasks file for roles/mysql
+
+- name: Copy db dump
+  copy:
+    src: bet.dmp
+    dest: "{{ mysql_db_dump_path }}"
+
+- name: Create mysql database
+  mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: present
+
+- name: Restore database
+  mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: import
+    target: "{{ mysql_db_dump_path }}"
+
+- name: Create user
+  mysql_user:
+    name: "{{ mysql_db_user }}"
+    password: "{{ mysql_db_user_password }}"
+    priv: "{{ mysql_db_user_privilege }}"
+    host: '%'
+    state: present
+
+- name: Create database dump
+  mysql_db:
+    name: all
+    state: dump
+    target: "{{ mysql_db_rep_dump_path }}"
+    ignore_tables: "{{ mysql_db_rep_ignored_tables }}"
+
+- name: Pull dump file from master to host
+  fetch:
+    src: "{{ mysql_db_rep_dump_path }}"
+    dest: "{{ mysql_db_rep_dump_path_vm }}"
+    flat: yes

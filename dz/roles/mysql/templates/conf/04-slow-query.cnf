@@ -1,0 +1,4 @@
+[mysqld]
+slow-query-log = {{ mysql.slow_query_log }}
+log-output = {{ mysql.log_output }}
+long-query-time = {{ mysql.long_query_time }}

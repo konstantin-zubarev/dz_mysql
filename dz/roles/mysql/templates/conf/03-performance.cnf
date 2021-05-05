@@ -1,0 +1,18 @@
+[mysqld]
+{% if mysql.skip_external_locking %}
+skip-external-locking
+{% endif %}
+key-buffer-size = {{ mysql.key_buffer_size }}
+max-allowed-packet = {{ mysql.max_allowed_packet }}
+table-open-cache = {{ mysql.table_open_cache }}
+sort-buffer-size = {{ mysql.sort_buffer_size }}
+join-buffer-size = {{ mysql.join_buffer_size }}
+read-buffer-size = {{ mysql.read_buffer_size }}
+read-rnd-buffer-size = {{ mysql.read_rnd_buffer_size }}
+myisam-sort-buffer-size = {{ mysql.myisam_sort_buffer_size }}
+thread-cache-size = {{ mysql.thread_cache_size }}
+query-cache-limit = {{ mysql.query_cache_limit }}
+query-cache-size = {{ mysql.query_cache_size }}
+tmp-table-size = {{ mysql.tmp_table_size }}
+max-heap-table-size = {{ mysql.max_heap_table_size }}
+#thread-concurrency = 8 # Из за этого параметра на Vagrant-овской виртуалке mysql не взлетает

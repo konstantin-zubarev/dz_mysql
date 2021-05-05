@@ -1,0 +1,34 @@
+---
+# tasks file for roles/mysql
+
+- name: Push dump file from host to slave
+  copy:
+    src: "{{ mysql_db_rep_dump_path_vm }}"
+    dest: "{{ mysql_db_rep_dump_path }}"
+
+- name: Create mysql database
+  mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: present
+
+- name: Reset master
+  shell: mysql -e "reset master;"
+
+- name: Restore database
+  mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: import
+    target: "{{ mysql_db_rep_dump_path }}"
+
+- name: Replication host "master"
+  mysql_replication:
+    mode: changemaster
+    master_host: "{{ mysql_master_ip }}"
+    master_port: 3306
+    master_user: "{{ mysql_db_user }}"
+    master_password: "{{ mysql_db_user_password }}"
+    master_auto_position: yes
+
+- name: Start slave
+  mysql_replication:
+    mode: startslave

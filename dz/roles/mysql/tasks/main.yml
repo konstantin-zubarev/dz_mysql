@@ -1,0 +1,17 @@
+---
+# tasks file for roles/mysql
+
+- name: Set timezone to Europe/Moscow
+  timezone:
+    name: Europe/Moscow
+
+- name: Install
+  include_tasks: install.yml
+
+- name: Conf master
+  include_tasks: master.yml
+  when: ansible_hostname == "mysql-master"
+
+- name: Conf slave
+  include_tasks: slave.yml
+  when: ansible_hostname == "mysql-slave"

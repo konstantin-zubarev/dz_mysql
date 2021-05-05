@@ -1,0 +1,16 @@
+[mysqld]
+log-bin = {{ mysql.log_bin }}
+expire-logs-days = {{ mysql.expire_logs_days }}
+max-binlog-size = {{ mysql.max_binlog_size }}
+binlog-format = {{ mysql.binlog_format }}
+
+# GTID replication config
+log-slave-updates = {{ mysql.log_slave_updates }}
+gtid-mode = {{ mysql.gtid_mode }}
+enforce-gtid-consistency = {{ mysql.enforce_gtid_consistency }}
+
+{% if mysql.replicate_ignore_table %}
+# Эта часть только для слэйва - исключаем репликацию таблиц
+replicate-ignore-table=bet.events_on_demand
+replicate-ignore-table=bet.v_same_event
+{% endif %}

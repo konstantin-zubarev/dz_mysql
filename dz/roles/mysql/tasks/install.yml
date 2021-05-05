@@ -1,0 +1,38 @@
+---
+# tasks file for roles/mysql
+
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ somelist }}"
+
+- name: Copy configs
+  template:
+    src: "{{ item }}"
+    dest: "{{ dir_mysql }}"
+  with_fileglob:
+    - ../templates/conf/*
+
+- name: Start mysqld
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Temp root password
+  shell: cat /var/log/mysqld.log | grep 'root@localhost:' | awk '{print $11}'
+  register: temp_root_password
+
+- name: Update root password
+  shell: >
+    mysql -uroot -p'{{ temp_root_password.stdout }}' --connect-expired-password
+    -e "ALTER USER USER() IDENTIFIED BY '{{ mysql_root_password }}';"
+
+- name: Copy root my.cnf file
+  template:
+    src: my.cnf.j2
+    dest: "{{ mysql_root_mycnf_path }}"
+    owner: root
+    group: root
+    mode: '0600'

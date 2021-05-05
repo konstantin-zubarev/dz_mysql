@@ -1,0 +1,12 @@
+[mysqld]
+pid-file={{ mysql.pid_file }}
+log-error={{ mysql.log_error }}
+datadir={{ mysql.datadir }}
+socket={{ mysql.socket }}
+symbolic-links={{ mysql.symbolic_links }}
+
+server-id = {{ mysql.server_id }}
+innodb_file_per_table = {{ mysql.innodb_file_per_table }}
+{% if mysql.skip_name_resolve %}
+skip-name-resolve
+{% endif %}
