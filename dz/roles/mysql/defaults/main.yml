@@ -19,7 +19,7 @@ mysql_db_rep_ignored_tables:
   - bet.events_on_demand
   - bet.v_same_event
 mysql_db_rep_dump_path: "/tmp/master.sql"
-mysql_db_rep_dump_path_vm: "./tmp/master.sql"
+mysql_db_rep_dump_path_vm: "./master.sql"
 
 somelist:
   - https://repo.percona.com/yum/percona-release-latest.noarch.rpm
